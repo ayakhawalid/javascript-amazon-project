@@ -68,3 +68,18 @@ export function updateQuantity(productId, newQuantity)
 
   saveToStorage();
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId)
+{
+  let found = false;
+  cart.forEach((cartItem)=>
+  {
+    if(cartItem.productId===productId)
+    {
+      cartItem.deliveryOptionId=deliveryOptionId;
+      found = true;
+    }
+  })
+  
+  saveToStorage();
+}
