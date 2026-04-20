@@ -24,7 +24,7 @@ export function addToCart(productId, quantity)
     }
   })
   if(!found)
-    cart.push({productId, quantity, deliveyOptionId: '1'});
+    cart.push({productId, quantity, deliveryOptionId: '1'});
 
   saveToStorage();
 }
