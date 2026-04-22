@@ -4,15 +4,10 @@ import { cart, loadFromStorage } from "../../data/cart.js";
 const productId1='e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
 const productId2='15b6fc6f-327a-4ec4-896f-486349e85a3d';
 
-beforeEach(()=>{
-  
-  
-});
-
 describe('test suite: renderOrderSummary', ()=>{
-  it('displays the cart', ()=>{
-    spyOn(localStorage, 'setItem');
 
+  beforeEach(()=>{
+    spyOn(localStorage, 'setItem');
     document.querySelector('.js-test-container').innerHTML=`
       <div class="js-header-checkout-quantity"></div>
       <div class="js-order-summary"></div>
@@ -31,53 +26,43 @@ describe('test suite: renderOrderSummary', ()=>{
           deliveryOptionId: '1'
         }
       ]);});
-
+  
     loadFromStorage();
     renderOrderSummary();
-    
-    expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(2);
-    expect(document.querySelector(`.js-product-quantity-${productId1}`).innerText).toContain('Quantity: 2');
-    expect(document.querySelector(`.js-product-quantity-${productId2}`).innerText).toContain('Quantity: 3');
-
+  });
+  
+  afterEach(()=>{
     document.querySelector('.js-test-container').innerHTML=`
     <div class="js-order-summary"></div>
     `;
   });
 
+  it('displays the cart', ()=>{  
+    expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(2);
+    expect(document.querySelector(`.js-product-quantity-${productId1}`).innerText).toContain('Quantity: 2');
+    expect(document.querySelector(`.js-product-quantity-${productId2}`).innerText).toContain('Quantity: 3');
+    expect(document.querySelector(`.js-product-name-${productId1}`).textContent.trim()).toEqual('Black and Gray Athletic Cotton Socks - 6 Pairs');
+    expect(document.querySelector(`.js-product-name-${productId2}`).textContent.trim()).toEqual('Intermediate Size Basketball');
+    expect(document.querySelector(`.js-product-price-${productId1}`).textContent.trim()).toEqual('$10.90');
+    expect(document.querySelector(`.js-product-price-${productId2}`).textContent.trim()).toEqual('$20.95');
+  });
+
   it('removes a product', ()=>{
-    spyOn(localStorage, 'setItem');
-
-    document.querySelector('.js-test-container').innerHTML=`
-      <div class="js-header-checkout-quantity"></div>
-      <div class="js-order-summary"></div>
-      <div class="js-payment-summary"></div>
-      `;
-    
-    spyOn(localStorage, 'getItem').and.callFake(()=>{
-      return JSON.stringify([
-        {
-          productId: productId1,
-          quantity: 2,
-          deliveryOptionId: '1'},
-        {
-          productId: productId2,
-          quantity: 3,
-          deliveryOptionId: '1'
-        }
-      ]);});
-
-    loadFromStorage();
-    renderOrderSummary();
     document.querySelector(`.js-delete-link-${productId1}`).click();
-    
     expect(document.querySelectorAll('.js-cart-item-container').length).toEqual(1);
     expect(document.querySelector(`.js-cart-item-container-${productId1}`)).toEqual(null);
     expect(document.querySelector(`.js-cart-item-container-${productId2}`)).not.toEqual(null);
     expect(cart.length).toEqual(1);
     expect(cart[0].productId).toEqual(productId2);
+    expect(document.querySelector(`.js-product-name-${productId2}`).textContent.trim()).toEqual('Intermediate Size Basketball');
+  });
 
-    document.querySelector('.js-test-container').innerHTML=`
-    <div class="js-order-summary"></div>
-    `;
-  })
+  it('updates a delivery option', ()=>{
+    document.querySelector(`.js-delivery-option-3-${productId1}`).click();
+    expect(document.querySelector(`.js-input-3-${productId1}`).checked).toEqual(true);
+    expect(cart[0].deliveryOptionId).toEqual('3');
+    expect(document.querySelector('.js-shipping-price').textContent.trim()).toEqual('$9.99');
+    expect(document.querySelector('.js-total-price').textContent.trim()).toEqual('$104.10');
+  });
 })
+

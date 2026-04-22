@@ -1,5 +1,7 @@
 export function formatCurrency(priceCents)
 {
+  if(priceCents<0)
+    return 'not a correct cents number';
   return (Math.round(priceCents)/100).toFixed(2);
 }
 
