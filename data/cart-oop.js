@@ -105,8 +105,7 @@ cart.loadFromStorage();
 const businessCart = Cart('busniess-cart');
 businessCart.loadFromStorage();
 
-console.log(cart);
-console.log(businessCart);
+
 
 
 
