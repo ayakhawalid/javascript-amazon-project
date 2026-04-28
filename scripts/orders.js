@@ -4,11 +4,13 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { products, getProduct } from "../data/products.js";
 import { loadProductsFetch } from "../data/products.js";
 import { addToCart } from "../data/cart.js";
+import { updateCartQuantity } from "./amazon.js";
 
 
 async function renderOrdersHTML(){
 
   await loadProductsFetch();
+  updateCartQuantity();
 
   orders.forEach((order)=>{
     document.querySelector('.js-orders-grid').innerHTML+=
