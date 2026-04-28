@@ -76,12 +76,11 @@ function renderProductsGrid(){
         updateCartQuantity();
       });
   })
-
-  function updateCartQuantity()
-  {
-    const cartQuantity = calculateCartQuantity();
-    document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
-  }
-
   updateCartQuantity();
+}
+
+export function updateCartQuantity()
+{
+  const cartQuantity = calculateCartQuantity();
+  document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
 }
